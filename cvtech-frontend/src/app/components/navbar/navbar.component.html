@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <div class="header">
+    <img class="logo" src="../../../assets/images/logo.png" alt="CVTech Logo">
+    
+    <div class="nav-links">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/upload-cv" routerLinkActive="active">Upload CV</a>
+      <a routerLink="/job-matches" routerLinkActive="active">Job Matches</a>
+      
+      <!-- Admin dropdown menu -->
+      <div class="admin-menu" *ngIf="authService.isAdmin()">
+        <a (click)="toggleAdminMenu($event)" role="button">Admin Panel ▼</a>
+        <div class="admin-dropdown" *ngIf="showAdminMenu">
+          <a routerLink="/admin/jobs" routerLinkActive="active">Manage Jobs</a>
+          <a routerLink="/admin/job-matches" routerLinkActive="active">All Job Matches</a>
+          <a routerLink="/admin/admin-candidates" routerLinkActive="active">Candidate Management</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

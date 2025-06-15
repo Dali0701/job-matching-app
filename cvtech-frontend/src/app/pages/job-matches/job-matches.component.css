@@ -1,0 +1,233 @@
+:host {
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8f9fe;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.job-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Badges */
+.match-score-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: white;
+  font-size: 14px;
+  z-index: 1;
+  background-color: #3b82f6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+}
+
+.best-match-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: #10b981;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+}
+
+/* Match score colors */
+.bg-success {
+  background-color: #10b981;
+}
+
+.bg-warning {
+  background-color: #f59e0b;
+  color: #1f2937;
+}
+
+.bg-danger {
+  background-color: #ef4444;
+}
+
+/* Header section */
+.job-title-section {
+  margin-bottom: 20px;
+  padding-right: 80px; /* More space for badges */
+}
+
+.job-title-section h2 {
+  margin: 0 0 4px 0; /* Adjusted margin */
+  font-size: 1.6rem; /* Slightly larger */
+  color: #111827;
+  font-weight: 700; /* Bolder */
+  line-height: 1.3;
+}
+
+.company-tag {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  color: #4b5563;
+  font-size: 1rem; /* Slightly larger */
+}
+
+.company-icon {
+  width: 20px; /* Slightly larger */
+  height: 20px;
+  margin-right: 8px;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+/* Meta information */
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* More space between items */
+  margin-bottom: 20px;
+  color: #4b5563;
+  font-size: 0.95rem; /* Slightly larger */
+}
+
+.job-location,
+.job-type,
+.job-experience {
+  display: flex;
+  align-items: center;
+}
+
+.location-icon,
+.type-icon,
+.experience-icon {
+  width: 18px; /* Slightly larger */
+  height: 18px;
+  margin-right: 8px;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+/* Description */
+.job-description {
+  color: #374151;
+  margin-bottom: 20px;
+  line-height: 1.7; /* More readable line height */
+  font-size: 1rem; /* Slightly larger */
+}
+
+/* Salary */
+.job-salary {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 600; /* Bolder */
+}
+
+.salary-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+/* Tags */
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* More space between tags */
+  margin-bottom: 20px;
+}
+
+.job-tag {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  padding: 6px 12px; /* More padding */
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.job-tag:hover {
+  background-color: #c7d2fe;
+  transform: translateY(-1px);
+}
+
+/* Actions */
+.job-actions {
+  display: flex;
+  gap: 16px; /* More space between buttons */
+  margin-top: 16px;
+}
+
+.btn-details,
+.btn-apply {
+  padding: 10px 24px; /* More padding */
+  border-radius: 8px; /* More rounded */
+  font-weight: 600; /* Bolder */
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+  border: none;
+}
+
+.btn-details {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-details:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.btn-apply {
+  background-color: #3f37c9;
+  color: white;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); /* Added subtle shadow */
+}
+
+.btn-apply:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .job-card {
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .job-title-section h2 {
+    font-size: 1.4rem;
+  }
+  
+  .job-meta {
+    gap: 12px;
+    font-size: 0.9rem;
+  }
+  
+  .job-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .btn-details,
+  .btn-apply {
+    width: 100%;
+    text-align: center;
+  }
+}

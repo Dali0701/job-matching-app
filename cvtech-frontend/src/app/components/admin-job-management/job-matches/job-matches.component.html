@@ -1,0 +1,113 @@
+<!-- job-matches.component.html -->
+<div class="container mt-4">
+  <h2>Job Matches Dashboard</h2>
+  
+  <div class="filter-container">
+    <input type="text" class="form-control" placeholder="Search by candidate name, email or job title" 
+           [(ngModel)]="searchTerm" (input)="filterMatches()">
+    <input type="text" class="form-control" placeholder="Filter by company" 
+           [(ngModel)]="companyFilter" (input)="filterMatches()">
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Candidate</th>
+          <th>Email</th>
+          <th>Job Title</th>
+          <th>Company</th>
+          <th (click)="toggleSortDirection()" style="cursor: pointer;">
+            Match %
+            <i class="fas" 
+               [ngClass]="{
+                 'fa-sort-amount-down': sortDirection === 'desc',
+                 'fa-sort-amount-up': sortDirection === 'asc'
+               }"></i>
+          </th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let match of filteredMatches">
+          <!-- Candidate Column -->
+          <td>
+            <div class="candidate-name" *ngIf="getCandidateDetails(match.candidateId) as candidate">
+              <div class="candidate-avatar">
+                {{ candidate.firstName.charAt(0) }}{{ candidate.lastName.charAt(0) }}
+              </div>
+              <div>
+                {{ candidate.firstName }} {{ candidate.lastName }}
+              </div>
+            </div>
+            <div *ngIf="!getCandidateDetails(match.candidateId)" class="candidate-name">
+              <div class="candidate-avatar">
+                {{ match.candidateId.charAt(0) }}
+              </div>
+              <div>
+                {{ match.candidateId.split('@')[0] }}
+              </div>
+            </div>
+          </td>
+          
+          <!-- Email Column -->
+          <td>
+            <div *ngIf="getCandidateDetails(match.candidateId) as candidate">
+              {{ candidate.email }}
+            </div>
+            <div *ngIf="!getCandidateDetails(match.candidateId)">
+              {{ match.candidateId }}
+            </div>
+          </td>
+          
+          <!-- Job Title Column -->
+          <td>
+            <div *ngIf="getJobDetails(match.jobId) as job">
+              {{ job.title }}
+            </div>
+            <div *ngIf="!getJobDetails(match.jobId)">
+              Job ID: {{ match.jobId }}
+            </div>
+          </td>
+          
+          <!-- Company Column -->
+          <td>
+            <div *ngIf="getJobDetails(match.jobId) as job">
+              {{ job.company }}
+            </div>
+            <div *ngIf="!getJobDetails(match.jobId)">
+              -
+            </div>
+          </td>
+          
+          <!-- Match Percentage Column -->
+          <td>
+            <span class="badge" 
+                  [ngClass]="{
+                    'badge-success': match.matchPercentage >= 70,
+                    'badge-warning': match.matchPercentage >= 40 && match.matchPercentage < 70,
+                    'badge-danger': match.matchPercentage < 40
+                  }">
+              {{ match.matchPercentage }}%
+            </span>
+          </td>
+          
+          <!-- Date Column -->
+          <td>{{ match.createdAt | date:'mediumDate' }}</td>
+          
+          <!-- Actions Column -->
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="deleteMatch(match.id)">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="filteredMatches.length === 0" class="alert alert-info">
+    No job matches found.
+  </div>
+</div>

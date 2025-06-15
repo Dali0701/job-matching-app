@@ -1,0 +1,119 @@
+<!-- src/app/components/admin-job-management/admin-job-management.component.html -->
+<div class="admin-container">
+  <h2>Job Management</h2>
+  
+  <!-- Success/Error Messages -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Job Form -->
+  <div class="job-form">
+    <h3>{{ isEditing ? 'Edit Job' : 'Create New Job' }}</h3>
+    
+    <form (ngSubmit)="saveJob()">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" [(ngModel)]="currentJob.title" name="title" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="company">Company</label>
+        <input type="text" id="company" [(ngModel)]="currentJob.company" name="company" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="currentJob.description" name="description" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" [(ngModel)]="currentJob.location" name="location" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="salary_range">Salary Range</label>
+        <input type="text" id="salary_range" [(ngModel)]="currentJob.salary_range" name="salary_range" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="job_type">Job Type</label>
+        <select id="job_type" [(ngModel)]="currentJob.job_type" name="job_type" required>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Contract">Contract</option>
+          <option value="Remote">Remote</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="experience_required">Experience Required (years)</label>
+        <input type="number" id="experience_required" [(ngModel)]="currentJob.experience_required" name="experience_required" min="0" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Required Skills</label>
+        <div class="skills-input">
+          <input type="text" [(ngModel)]="newSkill" name="newSkill" placeholder="Add skill" (keyup.enter)="addSkill()">
+          <button type="button" class="btn-add" (click)="addSkill()">Add</button>
+        </div>
+        <div class="skills-list">
+          <span *ngFor="let skill of currentJob.required_skills; let i = index" class="skill-tag">
+            {{ skill }} <button type="button" (click)="removeSkill(i)">×</button>
+          </span>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn-save">{{ isEditing ? 'Update' : 'Create' }}</button>
+        <button type="button" (click)="startNewJob()" class="btn-cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Jobs List -->
+  <div class="jobs-list">
+    <h3>Existing Jobs</h3>
+    <div *ngIf="jobs.length === 0" class="no-jobs">
+      No jobs found.
+    </div>
+    
+    <div *ngFor="let job of jobs" class="job-card">
+      <div class="job-header">
+        <h1 class="job-title">{{ job.title }}</h1>
+        <h2 class="company-name">{{ job.company }}</h2>
+        
+        <div class="job-meta">
+          <span>{{ job.location }}</span>
+          <span>•</span>
+          <span>{{ job.job_type }}</span>
+        </div>
+      </div>
+      
+      <p class="job-description">{{ job.description }}</p>
+      
+      <div class="job-details">
+        <div class="salary">
+          {{ job.salary_range || 'Salary not specified' }}
+        </div>
+        
+        <div class="skills-container">
+          <div class="skills-grid">
+            <span *ngFor="let skill of job.required_skills" class="skill-tag">
+              {{ skill }}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="job-actions">
+        <button (click)="editJob(job)" class="btn-edit">Edit</button>
+        <button (click)="deleteJob(job.id)" class="btn-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

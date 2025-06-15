@@ -1,0 +1,179 @@
+<div class="upload-container">
+  <div class="upload-content">
+    <h2>Upload Your CV</h2>
+    <p class="subtitle">Get started by uploading your resume. We'll analyze it and find your perfect job matches.</p>
+
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+      <!-- First Name Field -->
+      <div class="form-field">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" formControlName="firstName" placeholder="Enter your first name">
+        @if (registrationForm.get('firstName')?.invalid && (registrationForm.get('firstName')?.touched || formSubmitted)) {
+          <div class="error-message">
+            @if (registrationForm.get('firstName')?.errors?.['required']) {
+              First name is required
+            } @else {
+              Minimum 2 characters required
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Last Name Field -->
+      <div class="form-field">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Enter your last name">
+        @if (registrationForm.get('lastName')?.invalid && (registrationForm.get('lastName')?.touched || formSubmitted)) {
+          <div class="error-message">
+            @if (registrationForm.get('lastName')?.errors?.['required']) {
+              Last name is required
+            } @else {
+              Minimum 2 characters required
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter your email">
+        @if (registrationForm.get('email')?.invalid && (registrationForm.get('email')?.touched || formSubmitted)) {
+          <div class="error-message">
+            @if (registrationForm.get('email')?.errors?.['required']) {
+              Email is required
+            } @else {
+              Please enter a valid email address
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Phone Field -->
+      <div class="form-field">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" formControlName="phone" placeholder="Enter your phone number">
+        @if (registrationForm.get('phone')?.invalid && (registrationForm.get('phone')?.touched || formSubmitted)) {
+          <div class="error-message">
+            @if (registrationForm.get('phone')?.errors?.['required']) {
+              Phone number is required
+            } @else {
+              Please enter a valid phone number (10-15 digits)
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Skills Field -->
+      <div class="form-field">
+        <label for="skills">Skills (comma separated)</label>
+        <input type="text" id="skills" formControlName="skills" placeholder="e.g. Java, Angular, SQL">
+        @if (registrationForm.get('skills')?.invalid && (registrationForm.get('skills')?.touched || formSubmitted)) {
+          <div class="error-message">
+            @if (registrationForm.get('skills')?.errors?.['required']) {
+              At least one skill is required
+            }
+          </div>
+        }
+      </div>
+
+      <!-- CV Upload Section -->
+      <div class="upload-section">
+        <div class="upload-area" 
+             [class.active]="isDragging"
+             (drop)="onFileDrop($event)"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)">
+          
+          <input type="file" id="fileInput" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.txt" hidden>
+          
+          <div class="drop-zone-content" *ngIf="!cvFile; else filePreviewTemplate">
+            <svg class="upload-icon" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+            </svg>
+            <p class="drop-text">Drag & Drop your CV here</p>
+            <div class="divider">
+              <span>or</span>
+            </div>
+            <label for="fileInput" class="browse-btn">Browse Files</label>
+            <p class="file-types">Supports: PDF, DOC, DOCX, TXT (Max 5MB)</p>
+          </div>
+
+          <ng-template #filePreviewTemplate>
+            <div class="file-preview">
+              <div class="file-info">
+                <svg class="file-icon" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                <div>
+                  <div class="file-name">{{ cvFile?.name }}</div>
+                  <div class="file-size" *ngIf="cvFile">{{ (cvFile.size / 1024 / 1024).toFixed(2) }} MB</div>
+                </div>
+              </div>
+              <button type="button" class="remove-btn" (click)="removeFile()">
+                <svg viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                </svg>
+              </button>
+            </div>
+          </ng-template>
+        </div>
+
+        @if (fileError) {
+          <div class="file-error-message">
+            <svg viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/>
+            </svg>
+            {{ fileError }}
+          </div>
+        }
+      </div>
+
+      @if (errorMessage) {
+        <div class="form-error-message">
+          <svg viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/>
+          </svg>
+          {{ errorMessage }}
+        </div>
+      }
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="isSubmitting || !registrationForm.valid || !cvFile">
+          @if (isSubmitting) {
+            <span class="button-loading">
+              <span class="spinner"></span>
+              Uploading...
+            </span>
+          } @else {
+            <span>Submit Application</span>
+          }
+        </button>
+      </div>
+    </form>
+
+    <div class="upload-progress" *ngIf="uploadProgress > 0 && uploadProgress < 100">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="uploadProgress"></div>
+        </div>
+        <span class="progress-text">{{ uploadProgress }}% uploaded</span>
+      </div>
+      <p class="progress-hint">Please wait while we process your CV...</p>
+    </div>
+
+    <div class="upload-success" *ngIf="uploadComplete">
+      <div class="success-message">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
+        <h3>CV Successfully Uploaded!</h3>
+        <p>We're analyzing your CV. You'll be redirected to your matches shortly.</p>
+        <div class="success-actions">
+          <a routerLink="/job-matches" class="btn-primary">View Job Matches Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
